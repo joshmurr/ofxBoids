@@ -9,6 +9,7 @@ class Boid {
         void update();
         void applyforce(ofVec2f force);
         void seek(ofVec2f target);
+        void flee(ofVec2f target);
         void arrive(ofVec2f target);
         void draw();
 

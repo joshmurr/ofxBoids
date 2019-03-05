@@ -28,6 +28,17 @@ void ofApp::update(){
         std::cout << "randomVec: " << randomVec << endl;
         currentTime = ofGetElapsedTimeMillis();
     }
+    //if(prey.location.x > ofGetWidth()){
+        //prey.location.x = 0;
+    //} else if (prey.location.x < 0) {
+        //prey.location.x = ofGetWidth();
+    //}
+    //if(prey.location.y > ofGetHeight()){
+        //prey.location.y = 0;
+    //} else if (prey.location.y < 0) {
+        //prey.location.y = ofGetHeight();
+    //}
+    
     prey.seek(randomVec);
     predator.arrive(prey.location);
 }
