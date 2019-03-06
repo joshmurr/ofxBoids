@@ -23,22 +23,11 @@ void ofApp::update(){
     prey.update();
     deltaTime = ofGetElapsedTimeMillis() - currentTime;
     if(deltaTime > interval){
-        std::cout << "New Location" << endl;
+        //std::cout << "New Location" << endl;
         randomVec.set(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight()));
-        std::cout << "randomVec: " << randomVec << endl;
+        //std::cout << "randomVec: " << randomVec << endl;
         currentTime = ofGetElapsedTimeMillis();
     }
-    //if(prey.location.x > ofGetWidth()){
-        //prey.location.x = 0;
-    //} else if (prey.location.x < 0) {
-        //prey.location.x = ofGetWidth();
-    //}
-    //if(prey.location.y > ofGetHeight()){
-        //prey.location.y = 0;
-    //} else if (prey.location.y < 0) {
-        //prey.location.y = ofGetHeight();
-    //}
-    
     prey.seek(randomVec);
     predator.arrive(prey.location);
 }

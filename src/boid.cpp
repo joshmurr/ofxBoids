@@ -53,16 +53,10 @@ void Boid::arrive(ofVec2f target){
 }
 
 void Boid::flee(ofVec2f target){
+    //This isn't right.
     ofVec2f desired = _mouseloc = target - location;
     float d = location.distance(target);
     desired.normalize();
-    if(d<100){
-        float m = ofMap(d, 0, 100, 0, maxspeed);
-        desired *= m;
-    } else {
-        desired *= maxspeed;
-    }
-
     ofVec2f steer = desired - velocity;
     steer.limit(maxforce);
     steer *= -1;
