@@ -3,8 +3,67 @@ window.onload = function(){
         context = canvas.getContext("2d"),
         width = canvas.width = window.innerWidth,
         height = canvas.height = window.innerHeight,
-        centre, mouse, origin, dir, text, angle, circularTarget, circularTargetReturn;
+        centre, mouse, origin, dir, text, angle;
 
+    //CLASS SYNTAX:
+    class PVector {
+        constructor(x, y){
+            this.x = x;
+            this.y = y;
+        }
+
+        getx(){
+            return(this.x);
+        }
+        gety(){
+            return(this.y);
+        }
+
+        add(v){
+            this.x += v.x;
+            this.y += v.y;
+        }
+        sub(v){
+            this.x -= v.x;
+            this.y -= v.y;
+        }
+        mult(s){
+            this.x *= s;
+            this.y *= s;
+        }
+        div(s){
+            this.x /= s;
+            this.y /= s;
+        }
+        mag(){
+            return Math.sqrt(this.x*this.x + this.y*this.y);
+        }
+        normalize(){
+            var m = this.mag();
+            if(m > 0){
+                this.div(m);
+            }
+        }
+        getsub(v){
+            var t = new PVector(this.x, this.y);
+            t.sub(v);
+            return t;
+        }
+        getavg(v){
+            var t = new PVector(this.x, this.y);
+            t.add(v);
+            t.div(2);
+            return t;
+        }
+        avg(v){
+            this.x = (this.x + v.x)/2;
+            this.y = (this.y + v.x)/2;
+        }
+        getangle(){
+            return Math.atan2(this.y,this.x);
+        }
+    }
+    
     init();
     globalRender();
     
@@ -14,11 +73,6 @@ window.onload = function(){
         origin = new PVector(50,50);
         text = new PVector(centre.x, centre.y);
         text.avg(mouse);
-
-        circularTarget = new Target(Math.floor(Math.random()*width),Math.floor(Math.random()*height), 20);
-        circularTargetReturn = new PVector(0,0);
-        
-
     }
 
     function globalRender() {
@@ -28,7 +82,6 @@ window.onload = function(){
         //dir.normalize();
         //dir.mult(50);
         
-
         
         //Animating:
         context.clearRect(0,0,width,height);
@@ -64,6 +117,7 @@ window.onload = function(){
         context.lineTo(centre.x + dir.x, centre.y + dir.y);
 
         angle = -dir.getangle();
+        console.log(angle);
         
         context.save();
         //Matrix transormation to draw arrow head:
@@ -79,22 +133,6 @@ window.onload = function(){
 
         context.font = "10px Monospace";
         context.fillText("dir.x:"+dir.x+" dir.y:"+dir.y, text.x , text.y);
-        
-        //CIRCULAR JITTER:://///////////////////////
-        circularTargetReturn = circularTarget.createCircularJitter();
-        console.log(circularTargetReturn);
-
-
-        context.beginPath();
-        context.arc(circularTarget.x, circularTarget.y, circularTarget.radius, 0, 2*Math.PI);
-        context.stroke();
-        context.strokeStyle = 'green';
-        context.arc(circularTargetReturn.x, circularTargetReturn.y, 5, 0, 2*Math.PI);
-        context.stroke();
-
-        circularTarget.doJitter();
-
-        //END JITTER /////////////////////////////
         
 
 

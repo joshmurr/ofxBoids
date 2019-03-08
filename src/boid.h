@@ -10,6 +10,8 @@ class Boid {
         void applyforce(ofVec2f force);
         void seek(ofVec2f target);
         void flee(ofVec2f target);
+        void arriveCircleJitter(ofVec2f target, float radius, bool draw=false)
+        ofVec2f makeCircleJitter(ofVec2f){
         void arrive(ofVec2f target);
         void draw();
 

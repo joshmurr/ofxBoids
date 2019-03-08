@@ -52,6 +52,25 @@ void Boid::arrive(ofVec2f target){
     applyforce(steer);
 }
 
+
+ofVec2f Boid::makeCircleJitter(ofVec2f target, float radius, bool draw=false){
+    //ofVec2f circleCentre = target;
+    float angle = ofRandom(mathspi*2);
+    ofVec2f newTarget = target;
+    newTarget.normalize();
+    newTarget *= radius;
+    // OFF TO THINK.
+    
+)
+
+
+void Boid::arriveCircleJitter(ofVec2f target){
+
+    //desired = randomPointAroundCircle
+    ofVec2f desired = target - location;
+    desired.normalize();
+}
+
 void Boid::flee(ofVec2f target){
     //This isn't right.
     ofVec2f desired = _mouseloc = target - location;
