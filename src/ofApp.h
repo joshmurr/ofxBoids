@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp{
 
         Boid predator;
         Boid prey;
+        Boid idler;
         ofVec2f mouseloc;
 		
 };

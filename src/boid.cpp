@@ -8,6 +8,8 @@ void Boid::setup(float x, float y, ofColor c, float ms){
     acceleration.set(0,0);
     velocity.set(0,0);
     location.set(x, y);
+    target.set(0,0);
+    desired.set(0,0);
     size = 3.0;
 
     maxspeed = ms;
@@ -27,8 +29,9 @@ void Boid::applyforce(ofVec2f force){
     acceleration += force;
 }
 
-void Boid::seek(ofVec2f target){
-    ofVec2f desired = _mouseloc = target - location;
+void Boid::seek(ofVec2f newTarget){
+    target.set(newTarget);
+    desired = _mouseloc = target - location;
     desired.normalize();
     desired *= maxspeed;
     ofVec2f steer = desired - velocity;
@@ -36,8 +39,9 @@ void Boid::seek(ofVec2f target){
     applyforce(steer);
 }
 
-void Boid::arrive(ofVec2f target){
-    ofVec2f desired = _mouseloc = target - location;
+void Boid::arrive(ofVec2f newTarget){
+    target.set(newTarget);
+    desired = _mouseloc = target - location;
     float d = location.distance(target);
     desired.normalize();
     if(d<100){
@@ -53,28 +57,42 @@ void Boid::arrive(ofVec2f target){
 }
 
 
-ofVec2f Boid::makeCircleJitter(ofVec2f target, float radius, bool draw=false){
-    //ofVec2f circleCentre = target;
-    float angle = ofRandom(mathspi*2);
-    ofVec2f newTarget = target;
-    newTarget.normalize();
-    newTarget *= radius;
-    // OFF TO THINK.
-    
-)
-
-
-void Boid::arriveCircleJitter(ofVec2f target){
-
-    //desired = randomPointAroundCircle
-    ofVec2f desired = target - location;
+void Boid::arriveCircleJitter(ofVec2f newTarget, int radius){
+    target.set(newTarget);
+    // Current ARRIVE code
+    desired = target - location;
+    float d = location.distance(target);
     desired.normalize();
+
+    rad = radius;
+    jitter.set(rad*sin(angle), rad*cos(angle));
+    newJitter = jitter;
+    jitter.normalize();
+
+    // DRAW DEBUG
+
+
+    if(d<100){
+        float m = ofMap(d, 0, 100, 0, maxspeed);
+        desired *= m;
+    } else {
+        angle = ofRandom(PI*2);
+        desired *= maxspeed;
+    }
+
+
+
+    desired += jitter;
+
+    ofVec2f steer = desired - velocity;
+    steer.limit(maxforce);
+    applyforce(steer);
 }
 
-void Boid::flee(ofVec2f target){
-    //This isn't right.
-    ofVec2f desired = _mouseloc = target - location;
-    float d = location.distance(target);
+void Boid::flee(ofVec2f newTarget){
+    //This isn't righ.
+    target.set(newTarget);
+    desired = target - location;
     desired.normalize();
     ofVec2f steer = desired - velocity;
     steer.limit(maxforce);
@@ -91,4 +109,17 @@ void Boid::draw(){
         ofSetColor(thisColor);
         ofDrawTriangle(0,5,20,0,0,-5);
     ofPopMatrix();
+
+    ofSetLineWidth(1);
+    ofNoFill();
+    ofSetColor(thisColor);
+    ofDrawCircle(target, rad);
+
+
+    ofSetColor(251,255,35);
+    ofDrawLine(location.x, location.y, target.x, target.y);
+    ofSetColor(thisColor);
+    ofDrawLine(location.x, location.y, target.x+newJitter.x, target.y+newJitter.y);
+    ofSetColor(145,25,255);
+    ofDrawLine(target.x, target.y, target.x+newJitter.x, target.y+newJitter.y);
 }

@@ -83,9 +83,9 @@ class Target extends PVector {
     }
 
     doJitter(){
-        var num = Math.floor(Math.random()*100);
-        num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
-        this.seedx += num; 
-        this.seedy += num; 
+        this.seedx = Math.floor(Math.random()*1000);
+        this.seedy = Math.floor(Math.random()*1000);
+        this.seedx *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+        this.seedy *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
     }
 }

@@ -24,7 +24,6 @@ window.onload = function(){
     function globalRender() {
 
 
-        dir = mouse.getsub(centre);
         //dir.normalize();
         //dir.mult(50);
         
@@ -40,6 +39,7 @@ window.onload = function(){
         context.arc(mouse.getx(), mouse.gety(), 15, 0, Math.PI*2);
         context.fillStyle = '#FF0000';
         context.fill();
+
 
         context.lineWidth = 2;
         //(0,0) to mouse
@@ -57,7 +57,25 @@ window.onload = function(){
         context.stroke();
 
         
+        
+        //CIRCULAR JITTER:://///////////////////////
+        circularTargetReturn = circularTarget.createCircularJitter();
+        console.log(circularTargetReturn);
+
+
+        context.beginPath();
+        context.arc(circularTarget.x, circularTarget.y, circularTarget.radius, 0, 2*Math.PI);
+        context.strokeStyle = 'green';
+        context.arc(circularTargetReturn.x, circularTargetReturn.y, 5, 0, 2*Math.PI);
+        context.stroke();
+
+        circularTarget.doJitter();
+
+        //END JITTER /////////////////////////////
+        
+
         //dir
+        dir = circularTargetReturn.getsub(centre);
         context.beginPath();
         context.strokeStyle = "black";
         context.moveTo(centre.x,centre.y);
@@ -79,24 +97,6 @@ window.onload = function(){
 
         context.font = "10px Monospace";
         context.fillText("dir.x:"+dir.x+" dir.y:"+dir.y, text.x , text.y);
-        
-        //CIRCULAR JITTER:://///////////////////////
-        circularTargetReturn = circularTarget.createCircularJitter();
-        console.log(circularTargetReturn);
-
-
-        context.beginPath();
-        context.arc(circularTarget.x, circularTarget.y, circularTarget.radius, 0, 2*Math.PI);
-        context.stroke();
-        context.strokeStyle = 'green';
-        context.arc(circularTargetReturn.x, circularTargetReturn.y, 5, 0, 2*Math.PI);
-        context.stroke();
-
-        circularTarget.doJitter();
-
-        //END JITTER /////////////////////////////
-        
-
 
         requestAnimationFrame(globalRender);
     }

@@ -12,6 +12,8 @@ void ofApp::setup(){
     predator.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), predCol, 1.0);
     prey.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), preyCol, 2.0);
 
+    idler.setup(ofGetWidth()/2, ofGetHeight()/2, ofColor(0,255,0), 1.5);
+
     randomVec.set(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight()));
 
     currentTime = ofGetElapsedTimeMillis();
@@ -21,6 +23,7 @@ void ofApp::setup(){
 void ofApp::update(){
     predator.update();
     prey.update();
+    idler.update();
     deltaTime = ofGetElapsedTimeMillis() - currentTime;
     if(deltaTime > interval){
         //std::cout << "New Location" << endl;
@@ -30,11 +33,13 @@ void ofApp::update(){
     }
     prey.seek(randomVec);
     predator.arrive(prey.location);
+    idler.arriveCircleJitter(mouseloc, 80);
 }
 //--------------------------------------------------------------
 void ofApp::draw(){
     predator.draw();
     prey.draw();
+    idler.draw();
 }
 
 //--------------------------------------------------------------
@@ -49,7 +54,7 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-    //mouseloc.set(x,y);
+    mouseloc.set(x,y);
     //boid.arrive(mouseloc);
 }
 
