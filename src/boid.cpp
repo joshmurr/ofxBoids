@@ -1,4 +1,6 @@
 #include "boid.h"
+#include "flowfield.h"
+
 Boid::Boid(){
 }
 
@@ -29,6 +31,33 @@ void Boid::applyforce(ofVec2f force){
     acceleration += force;
 }
 
+void Boid::wrap(){
+    if(location.x > ofGetWidth()){
+        location.x = 0;
+    } else if(location.x < 0){
+        location.x = ofGetWidth();
+    }
+    if(location.y > ofGetHeight()){
+        location.y = 0;
+    } else if(location.y < 0){
+        location.y = ofGetHeight();
+    }
+            
+}
+
+void Boid::bounce(){
+    if(location.x > ofGetWidth()){
+        velocity.x *= -1;
+    } else if(location.x < 0){
+        velocity.x *= -1;
+    }
+    if(location.y > ofGetHeight()){
+        velocity.y *= -1;
+    } else if(location.y < 0){
+        velocity.y *= -1;
+    }
+            
+}
 void Boid::seek(ofVec2f newTarget){
     target.set(newTarget);
     desired = _mouseloc = target - location;
@@ -69,9 +98,6 @@ void Boid::arriveCircleJitter(ofVec2f newTarget, int radius){
     newJitter = jitter;
     jitter.normalize();
 
-    // DRAW DEBUG
-
-
     if(d<100){
         float m = ofMap(d, 0, 100, 0, maxspeed);
         desired *= m;
@@ -79,8 +105,6 @@ void Boid::arriveCircleJitter(ofVec2f newTarget, int radius){
         angle = ofRandom(PI*2);
         desired *= maxspeed;
     }
-
-
 
     desired += jitter;
 
@@ -100,7 +124,15 @@ void Boid::flee(ofVec2f newTarget){
     applyforce(steer);
 }
 
-void Boid::draw(){
+void Boid::follow(Flowfield &flow){
+    ofVec2f desired = flow.lookup(location);
+    desired *= maxspeed;
+    ofVec2f steer = desired - velocity;
+    steer.limit(maxforce);
+    applyforce(steer);
+}
+
+void Boid::draw(bool debug){
     ofSetColor(thisColor);
     ofPushMatrix();
         ofTranslate(location.x, location.y);
@@ -110,16 +142,16 @@ void Boid::draw(){
         ofDrawTriangle(0,5,20,0,0,-5);
     ofPopMatrix();
 
-    ofSetLineWidth(1);
-    ofNoFill();
-    ofSetColor(thisColor);
-    ofDrawCircle(target, rad);
-
-
-    ofSetColor(251,255,35);
-    ofDrawLine(location.x, location.y, target.x, target.y);
-    ofSetColor(thisColor);
-    ofDrawLine(location.x, location.y, target.x+newJitter.x, target.y+newJitter.y);
-    ofSetColor(145,25,255);
-    ofDrawLine(target.x, target.y, target.x+newJitter.x, target.y+newJitter.y);
+    if(debug){
+        ofSetLineWidth(1);
+        ofNoFill();
+        ofSetColor(thisColor);
+        ofDrawCircle(target, rad);
+        ofSetColor(251,255,35);
+        ofDrawLine(location.x, location.y, target.x, target.y);
+        ofSetColor(thisColor);
+        ofDrawLine(location.x, location.y, target.x+newJitter.x, target.y+newJitter.y);
+        ofSetColor(145,25,255);
+        ofDrawLine(target.x, target.y, target.x+newJitter.x, target.y+newJitter.y);
+    }
 }

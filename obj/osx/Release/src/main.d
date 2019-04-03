@@ -822,6 +822,7 @@ obj/osx/Release/src/main.o: \
   /Users/joshmurr/Documents/of_v0.10.1_osx_release/libs/openFrameworks/3d/ofCamera.h \
   /Users/joshmurr/Documents/of_v0.10.1_osx_release/libs/openFrameworks/3d/ofEasyCam.h \
   /Users/joshmurr/Documents/of_v0.10.1_osx_release/apps/myApps/steering/src/ofApp.h \
+  /Users/joshmurr/Documents/of_v0.10.1_osx_release/apps/myApps/steering/src/flowfield.h \
   /Users/joshmurr/Documents/of_v0.10.1_osx_release/apps/myApps/steering/src/boid.h
 
 /Users/joshmurr/Documents/of_v0.10.1_osx_release/libs/openFrameworks/ofMain.h:
@@ -2467,5 +2468,7 @@ obj/osx/Release/src/main.o: \
 /Users/joshmurr/Documents/of_v0.10.1_osx_release/libs/openFrameworks/3d/ofEasyCam.h:
 
 /Users/joshmurr/Documents/of_v0.10.1_osx_release/apps/myApps/steering/src/ofApp.h:
+
+/Users/joshmurr/Documents/of_v0.10.1_osx_release/apps/myApps/steering/src/flowfield.h:
 
 /Users/joshmurr/Documents/of_v0.10.1_osx_release/apps/myApps/steering/src/boid.h:

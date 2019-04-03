@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "flowfield.h"
 #include "boid.h"
 
 
@@ -23,9 +24,8 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-        Boid predator;
-        Boid prey;
-        Boid idler;
+        Flowfield flowfield;
+        vector<Boid> boids;
         ofVec2f mouseloc;
 		
 };

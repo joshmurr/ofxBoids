@@ -1,49 +1,64 @@
 #include "ofApp.h"
 
-ofVec2f randomVec(0,0);
-int currentTime = 0;
-int deltaTime = 0;
-int interval = 800;
-
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofColor predCol(255,0,0);
-    ofColor preyCol(0,0,255);
-    predator.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), predCol, 1.0);
-    prey.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), preyCol, 2.0);
-
-    idler.setup(ofGetWidth()/2, ofGetHeight()/2, ofColor(0,255,0), 1.5);
-
-    randomVec.set(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight()));
-
-    currentTime = ofGetElapsedTimeMillis();
+    flowfield.setup();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    predator.update();
-    prey.update();
-    idler.update();
-    deltaTime = ofGetElapsedTimeMillis() - currentTime;
-    if(deltaTime > interval){
-        //std::cout << "New Location" << endl;
-        randomVec.set(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight()));
-        //std::cout << "randomVec: " << randomVec << endl;
-        currentTime = ofGetElapsedTimeMillis();
+    for(int i=0; i<boids.size(); i++){
+        boids[i].update();
+        boids[i].wrap();
+        boids[i].follow(flowfield);
     }
-    prey.seek(randomVec);
-    predator.arrive(prey.location);
-    idler.arriveCircleJitter(mouseloc, 80);
+    //if(deltaTime > interval){
+    //}
+    //idler.arriveCircleJitter(mouseloc, 80);
 }
 //--------------------------------------------------------------
 void ofApp::draw(){
-    predator.draw();
-    prey.draw();
-    idler.draw();
+    flowfield.draw();
+    for(int i=0; i<boids.size(); i++){
+        boids[i].draw();
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    if(key == ' '){
+        Boid newBoid;
+        newBoid.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), ofColor(ofRandom(255),ofRandom(255),55), ofRandom(0.1,3));
+        boids.push_back(newBoid);
+    }
+    if(key == '1'){
+        for(int i=0; i<10; i++){
+            Boid newBoid;
+            newBoid.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), ofColor(ofRandom(255),ofRandom(255),55), ofRandom(0.1,3));
+            boids.push_back(newBoid);
+        }
+    }
+    if(key == '2'){
+        for(int i=0; i<50; i++){
+            Boid newBoid;
+            newBoid.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), ofColor(ofRandom(255),ofRandom(255),55), ofRandom(0.1,3));
+            boids.push_back(newBoid);
+        }
+    }
+    if(key == '3'){
+        for(int i=0; i<100; i++){
+            Boid newBoid;
+            newBoid.setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), ofColor(ofRandom(255),ofRandom(255),55), ofRandom(0.1,3));
+            boids.push_back(newBoid);
+        }
+    }
+    if(key == 'c'){
+        boids.clear();
+    }
+    if(key == 'n'){
+        printf("Number of Boids: %lu\n", boids.size());
+    }
+
 
 }
 
@@ -65,7 +80,10 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    randomVec.set(ofRandom(0,ofGetWidth()),ofRandom(0,ofGetHeight()));
+    //for(int i=0; i<boids.size(); i++){
+        //boids[i].setup(ofRandom(ofGetWidth()), ofRandom(ofGetHeight()), ofColor(ofRandom(255),214,55), 1.5);
+    //}
+    flowfield.setup();
 }
 
 //--------------------------------------------------------------
